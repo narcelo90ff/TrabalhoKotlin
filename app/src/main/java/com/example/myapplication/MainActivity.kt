@@ -1,4 +1,4 @@
-package com.example.datingapp
+package com.example.myapplication
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,11 +10,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ChatBubble
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Whatshot
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -43,7 +38,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun DatingApp() {
-    var selectedTab by remember { mutableStateOf(0) }
+    var selectedTab by remember { mutableIntStateOf(0) }
 
     Scaffold(
         containerColor = Color(0xFF0D0D0D),
@@ -52,25 +47,25 @@ fun DatingApp() {
                 NavigationBarItem(
                     selected = selectedTab == 0,
                     onClick = { selectedTab = 0 },
-                    icon = { Icon(Icons.Filled.Whatshot, contentDescription = "Descobrir") },
+                    icon = { Text("🔥", fontSize = 20.sp) },
                     label = { Text("Descobrir") }
                 )
                 NavigationBarItem(
                     selected = selectedTab == 1,
                     onClick = { selectedTab = 1 },
-                    icon = { Icon(Icons.Filled.Favorite, contentDescription = "Curtidas") },
+                    icon = { Text("❤", fontSize = 20.sp) },
                     label = { Text("Curtidas") }
                 )
                 NavigationBarItem(
                     selected = selectedTab == 2,
                     onClick = { selectedTab = 2 },
-                    icon = { Icon(Icons.Filled.ChatBubble, contentDescription = "Chat") },
+                    icon = { Text("💬", fontSize = 20.sp) },
                     label = { Text("Chat") }
                 )
                 NavigationBarItem(
                     selected = selectedTab == 3,
                     onClick = { selectedTab = 3 },
-                    icon = { Icon(Icons.Filled.Person, contentDescription = "Perfil") },
+                    icon = { Text("👤", fontSize = 20.sp) },
                     label = { Text("Perfil") }
                 )
             }
