@@ -106,10 +106,10 @@ fun TelaDescobrir() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Button(onClick = { /* nao curtiu */ }) {
+            Button(onClick = {  }) {
                 Text("❌")
             }
-            Button(onClick = { /* curtiu */ }) {
+            Button(onClick = {  }) {
                 Text("❤\uFE0F")
             }
         }
