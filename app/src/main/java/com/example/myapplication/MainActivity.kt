@@ -5,8 +5,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChatBubble
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Whatshot
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -44,25 +52,25 @@ fun DatingApp() {
                 NavigationBarItem(
                     selected = selectedTab == 0,
                     onClick = { selectedTab = 0 },
-                    icon = {},
+                    icon = { Icon(Icons.Filled.Whatshot, contentDescription = "Descobrir") },
                     label = { Text("Descobrir") }
                 )
                 NavigationBarItem(
                     selected = selectedTab == 1,
                     onClick = { selectedTab = 1 },
-                    icon = {},
+                    icon = { Icon(Icons.Filled.Favorite, contentDescription = "Curtidas") },
                     label = { Text("Curtidas") }
                 )
                 NavigationBarItem(
                     selected = selectedTab == 2,
                     onClick = { selectedTab = 2 },
-                    icon = {},
+                    icon = { Icon(Icons.Filled.ChatBubble, contentDescription = "Chat") },
                     label = { Text("Chat") }
                 )
                 NavigationBarItem(
                     selected = selectedTab == 3,
                     onClick = { selectedTab = 3 },
-                    icon = {},
+                    icon = { Icon(Icons.Filled.Person, contentDescription = "Perfil") },
                     label = { Text("Perfil") }
                 )
             }
@@ -126,33 +134,89 @@ fun SwipeScreen() {
     }
 }
 
+// Modelo simples só para alimentar as listas de Curtidas e Chat
+data class Person(val name: String, val age: Int, val subtitle: String)
+
 @Composable
 fun LikesScreen() {
+    val curtidas = remember {
+        listOf(
+            Person("Beatriz", 24, "Curtiu você de volta!"),
+            Person("Camila", 27, "Match perfeito!")
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(20.dp)
     ) {
-        Text("Curtidas Recentes", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text("Curtidas", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text(
+                "${curtidas.size} curtida${if (curtidas.size != 1) "s" else ""}",
+                color = Color(0xFF8A8A8A),
+                fontSize = 14.sp
+            )
+        }
         Spacer(modifier = Modifier.height(20.dp))
 
-        CardItem(name = "Beatriz", age = 24, subtitle = "Curtiu você de volta!")
-        Spacer(modifier = Modifier.height(12.dp))
-        CardItem(name = "Camila", age = 27, subtitle = "Match perfeito!")
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            items(curtidas) { pessoa ->
+                CardItem(name = pessoa.name, age = pessoa.age, subtitle = pessoa.subtitle)
+            }
+        }
     }
 }
 
 @Composable
 fun ChatScreen() {
+    val matches = remember { listOf("Beatriz", "Camila", "Julia") }
+    val conversas = remember {
+        listOf(
+            Person("Beatriz", 24, "Beatriz: Oii! Tudo bem?"),
+            Person("Camila", 27, "Você: Combinado então 😄")
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(20.dp)
     ) {
-        Text("Conversas", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
-        Spacer(modifier = Modifier.height(20.dp))
+        Text("Chat", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        Spacer(modifier = Modifier.height(16.dp))
 
-        CardItem(name = "Beatriz", age = 24, subtitle = "Beatriz: Oii! Tudo bem?")
+        Text("Novos matches", color = Color(0xFF8A8A8A), fontSize = 14.sp)
+        Spacer(modifier = Modifier.height(8.dp))
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            items(matches) { nome ->
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Box(
+                        modifier = Modifier
+                            .size(70.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(Color(0xFFFF7A8A))
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(nome, color = Color.White, fontSize = 12.sp)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+        Text("Mensagens", color = Color(0xFF8A8A8A), fontSize = 14.sp)
+        Spacer(modifier = Modifier.height(8.dp))
+
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            items(conversas) { pessoa ->
+                CardItem(name = pessoa.name, age = pessoa.age, subtitle = pessoa.subtitle)
+            }
+        }
     }
 }
 
@@ -187,6 +251,17 @@ fun ProfileScreen() {
         Text("Nome: Você", color = Color.White, fontSize = 18.sp)
         Spacer(modifier = Modifier.height(10.dp))
         Text("Idade: 23 anos", color = Color.White, fontSize = 18.sp)
+        Spacer(modifier = Modifier.height(10.dp))
+        Text("Localização: São Paulo, SP", color = Color.White, fontSize = 18.sp)
+
+        Spacer(modifier = Modifier.height(30.dp))
+        Button(
+            onClick = {},
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFE3C72)),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Editar perfil", color = Color.White)
+        }
     }
 }
 
